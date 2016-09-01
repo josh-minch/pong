@@ -1,0 +1,17 @@
+NET "clk"                   LOC = "b8";
+NET "move_up_control_p0"       LOC = "G12";
+NET "move_down_control_p0"     LOC = "C11";
+NET "move_up_control_p1"       LOC = "m4";
+NET "move_down_control_p1"     LOC = "a7";
+
+NET "h_sync_with_porch"  LOC = "J14"; #| DRIVE = 2  | PULLUP ; # Bank = 1, Signal name = HSYNC
+NET "v_sync_with_porch"  LOC = "K13";  #| DRIVE = 2  | PULLUP ; # Bank = 1, Signal name = VSYNC
+
+NET "rgb<7>"  LOC = "F13";  #| DRIVE = 2  | PULLUP ;  Bank = 1, Signal name = RED2
+NET "rgb<6>"  LOC = "D13";  #| DRIVE = 2  | PULLUP ;  Bank = 1, Signal name = RED1
+NET "rgb<5>"  LOC = "C14";  #| DRIVE = 2  | PULLUP ;  Bank = 1, Signal name = RED0
+NET "rgb<4>"  LOC = "G14";  #| DRIVE = 2  | PULLUP ;  Bank = 1, Signal name = GRN2
+NET "rgb<3>"  LOC = "G13";  #| DRIVE = 2  | PULLUP ;  Bank = 1, Signal name = GRN1 
+NET "rgb<2>"  LOC = "F14";  #| DRIVE = 2  | PULLUP ;  Bank = 1, Signal name = GRN0 
+NET "rgb<1>"  LOC = "J13";  #| DRIVE = 2  | PULLUP ;  Bank = 1, Signal name = BLU2
+NET "rgb<0>"  LOC = "H13";  #| DRIVE = 2  | PULLUP ;  Bank = 1, Signal name = BLU1 
