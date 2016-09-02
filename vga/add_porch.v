@@ -19,10 +19,20 @@ module add_porch
         input clk
     );
 
+    // 72 Hz
+    
     parameter V_FRONT_PORCH = 37;
     parameter V_BACK_PORCH  = 23;
     parameter H_FRONT_PORCH = 56;
     parameter H_BACK_PORCH  = 64;
+    
+
+    /* 75 Hz
+    parameter V_FRONT_PORCH = 1;
+    parameter V_BACK_PORCH  = 21;
+    parameter H_FRONT_PORCH = 16;
+    parameter H_BACK_PORCH  = 180;
+    */
 
     wire temp_h_sync;
     wire temp_v_sync;

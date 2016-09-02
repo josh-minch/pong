@@ -1,3 +1,6 @@
+// Draw a rectangle with the specified bounds. Color is specified with the
+// 8-bit rgb parameter RECT_COLOR. 3 bits for red, 3 for green, 2 for blue.
+
 module draw_rectangle
     #(
         parameter RECT_COLOR = 8'b11111111 // default white
@@ -20,10 +23,8 @@ module draw_rectangle
         if (((left_bound < col_counter) && (col_counter < right_bound)) &&
              ((top_bound < row_counter) && (row_counter < bottom_bound)))
             rgb = RECT_COLOR;
-        
         else
             rgb = 0;
-        
     end
    
 endmodule

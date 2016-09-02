@@ -10,7 +10,7 @@ module draw_ball
         input [11:0] col_counter,
         input [11:0] row_counter,
 
-        output reg [7:0] ball_rgb,
+        output [7:0] ball_rgb,
 
         input clk
     );
@@ -26,20 +26,6 @@ module draw_ball
             .right_bound  (ball_center_col + (BALL_WIDTH/2) ),
             .rgb          (ball_rgb),
             .clk          (clk)
-        );
-
-    move_ball #(
-            .DISP_COLS(DISP_COLS),
-            .DISP_ROWS(DISP_ROWS),
-            .UP_LEFT(UP_LEFT),
-            .DOWN_LEFT(DOWN_LEFT),
-            .UP_RIGHT(UP_RIGHT),
-            .DOWN_RIGHT(DOWN_RIGHT)
-        ) inst_move_ball (
-            .ball_direction (ball_direction),
-            .ball_center_col(ball_center_col),
-            .ball_center_col(ball_center_row),
-            .clk            (clk)
         );
 
 endmodule

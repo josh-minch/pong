@@ -1,5 +1,7 @@
-An unfinished implementation of a VGA controller and Pong written in Verilog,
-designed to work on the Digilent BASYS2 FPGA board.
+###Pong
+
+An unfinished implementation of Pong and an accompanying VGA controller built
+with Verilog, tested to work on the Digilent BASYS2 FPGA board.
 
 Game and control details:
 

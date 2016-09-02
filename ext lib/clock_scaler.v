@@ -10,7 +10,7 @@ module clock_scaler
     )
     (  
         input  clk,
-		input [SCALER_WIDTH : 0] scaler,
+		  input  [SCALER_WIDTH - 1 : 0] scaler,
         output reg slower_clk
     );
 

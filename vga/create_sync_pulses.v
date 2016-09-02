@@ -10,15 +10,14 @@ module create_sync_pulses
     parameter TOTAL_ROWS  = 525
     )
     (
-        output            v_sync,
-        output            h_sync,
+        output reg v_sync,
+        output reg h_sync,
 
         input clk
     ); 
 
     reg [11:0] row_counter = 0;
     reg [11:0] col_counter = 0;
-
 
     always @ (posedge clk) begin
         if (col_counter == TOTAL_COLS - 1) begin
@@ -35,9 +34,9 @@ module create_sync_pulses
         end
     end
 
-    always @(posedge clk) begin
-        h_sync = col_counter < DISP_COLS ? 1 : 0;
-        v_sync = col_counter < DISP_COLS ? 1 : 0;
+    always@ (posedge clk) begin
+        assign v_sync = row_counter < DISP_ROWS ? 1 : 0;
+        assign h_sync = col_counter < DISP_COLS ? 1 : 0;
     end
-
+    
 endmodule

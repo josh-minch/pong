@@ -1,5 +1,5 @@
 /*
-    Draw game objects to screen thru output rgb signal
+    Draw 2 paddles, 1 ball, and associated movement modules to screen thru output rgb signal
 */
 
 module draw_game_objects
@@ -20,6 +20,10 @@ module draw_game_objects
         input clk
     );
 
+    parameter L_PADDLE_COLOR      = 8'b11111111;
+    parameter R_PADDLE_COLOR      = 8'b11111111;
+    parameter BALL_COLOR          = 8'b11100000;
+
     parameter PADDLE_HEIGHT       = 44;
     parameter PADDLE_WIDTH        = 12;
     parameter BALL_HEIGHT         = 8;
@@ -28,16 +32,13 @@ module draw_game_objects
     parameter L_PADDLE_CENTER_COL = 15;
     parameter R_PADDLE_CENTER_COL = DISP_COLS - 15;
 
-    parameter BALL_COLOR          = 8'b11100000;
-    parameter L_PADDLE_COLOR      = 8'b11111111;
-    parameter R_PADDLE_COLOR      = 8'b11111111;
-
     wire [11:0] l_paddle_center_row;
     wire [7:0]  l_paddle;
     wire [11:0] r_paddle_center_row;
     wire [7:0]  r_paddle;
     wire [11:0] ball_center_col;
     wire [11:0] ball_center_row;
+    wire [7:0]  ball;
 
     draw_paddle #(
             .PADDLE_COLOR(L_PADDLE_COLOR),
@@ -52,6 +53,16 @@ module draw_game_objects
             .row_counter       (row_counter),
             .paddle_rgb        (l_paddle),
             .clk               (clk)
+        );
+
+    player_move_paddle #(
+        .DISP_COLS(DISP_COLS),
+        .DISP_ROWS(DISP_ROWS)
+        ) inst_player_move_l_paddle (
+            .clk               (clk),
+            .move_up_control   (move_up_control_p0),
+            .move_down_control (move_down_control_p0),
+            .paddle_center_row (l_paddle_center_row)
         );
 
     draw_paddle #(
@@ -69,30 +80,7 @@ module draw_game_objects
             .clk               (clk)
         );
 
-    draw_ball #(
-        .BALL_COLOR(BALL_COLOR),
-        .BALL_HEIGHT(BALL_HEIGHT),
-        .BALL_WIDTH(BALL_WIDTH)
-    ) inst_draw_ball (
-        .ball_center_row (ball_center_row),
-        .ball_center_col (ball_center_col),
-        .col_counter     (col_counter),
-        .row_counter     (row_counter),
-        .ball_rgb        (ball),
-        .clk             (clk)
-    );
-
-    player_move_paddle #(
-        .DISP_COLS(DISP_COLS),
-        .DISP_ROWS(DISP_ROWS)
-        ) inst_player_move_l_paddle (
-            .clk               (clk),
-            .move_up_control   (move_up_control_p0),
-            .move_down_control (move_down_control_p0),
-            .paddle_center_row (l_paddle_center_row)
-        );
-
-    player_move_paddle #(
+     player_move_paddle #(
             .DISP_COLS(DISP_COLS),
             .DISP_ROWS(DISP_ROWS)
         ) inst_player_move_r_paddle (
@@ -102,6 +90,35 @@ module draw_game_objects
             .paddle_center_row (r_paddle_center_row)
         );
 
-    assign rgb = l_paddle | r_paddle | ball; // | top | bottom;
+    draw_ball #(
+            .BALL_COLOR(BALL_COLOR),
+            .BALL_HEIGHT(BALL_HEIGHT),
+            .BALL_WIDTH(BALL_WIDTH)
+        ) inst_draw_ball (
+            .ball_center_row (ball_center_row),
+            .ball_center_col (ball_center_col),
+            .col_counter     (col_counter),
+            .row_counter     (row_counter),
+            .ball_rgb        (ball),
+            .clk             (clk)
+        );
+
+    move_ball #(
+            .DISP_COLS(DISP_COLS),
+            .DISP_ROWS(DISP_ROWS),
+            .P_WIDTH(PADDLE_WIDTH),
+            .B_HEIGHT(BALL_HEIGHT),
+            .B_WIDTH(BALL_WIDTH),
+            .L_PADDLE_CENTER_COL(L_PADDLE_CENTER_COL),
+            .R_PADDLE_CENTER_COL(R_PADDLE_CENTER_COL)
+        ) inst_move_ball (
+            .l_center_row     (l_paddle_center_row),
+            .r_center_row     (r_paddle_center_row),
+            .ball_center_col  (ball_center_col),
+            .ball_center_row  (ball_center_row),
+            .clk              (clk)
+        );
+
+    assign rgb = l_paddle | r_paddle | ball;
 
 endmodule
