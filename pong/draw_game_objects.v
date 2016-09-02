@@ -24,8 +24,8 @@ module draw_game_objects
     parameter R_PADDLE_COLOR      = 8'b11111111;
     parameter BALL_COLOR          = 8'b11100000;
 
-    parameter PADDLE_HEIGHT       = 44;
-    parameter PADDLE_WIDTH        = 12;
+    parameter PADDLE_HEIGHT       = 40;
+    parameter PADDLE_WIDTH        = 10;
     parameter BALL_HEIGHT         = 8;
     parameter BALL_WIDTH          = 6;
 

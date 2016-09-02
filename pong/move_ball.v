@@ -17,8 +17,7 @@ module move_ball
         input [11:0] l_center_row, // center row of left and right paddles
         input [11:0] r_center_row,
         output reg [11:0] ball_center_col = DISP_COLS/2,
-        output reg [11:0] ball_center_row = DISP_ROWS/2
-        ,
+        output reg [11:0] ball_center_row = DISP_COLS/2,
 
         input clk
     );
@@ -28,7 +27,8 @@ module move_ball
     parameter UP_RIGHT   = 2'b10;
     parameter DOWN_RIGHT = 2'b11;
 
-    parameter SCALER = 300000;
+    parameter SCALER = 100000;
+    //parameter SCALER = 1000;
 
     reg [1:0] ball_direction = UP_RIGHT;
 
@@ -40,45 +40,55 @@ module move_ball
         );
 
     // Detect collisions
-    always@ (posedge clk) begin
-        if (ball_center_row - B_HEIGHT/2 <= 2) begin
+    always@ (posedge slower_clk) begin
+
+        // hit top
+        if (ball_center_row - B_HEIGHT/2 <= 1) begin
             if (ball_direction == UP_LEFT)
                 ball_direction = DOWN_LEFT;
-            if (ball_center_col == UP_RIGHT)
+            if (ball_direction == UP_RIGHT) 
                 ball_direction = DOWN_RIGHT;
         end
           
-        else if (ball_center_row + B_HEIGHT/2 >= DISP_ROWS - 46) begin
+        // hit bottom
+        else if (ball_center_row + B_HEIGHT/2 >= DISP_ROWS - 40) begin
             if (ball_direction == DOWN_LEFT)
                 ball_direction = UP_LEFT;
-            if (ball_center_col == DOWN_RIGHT)
+            if (ball_direction == DOWN_RIGHT)
                 ball_direction = UP_RIGHT;
         end
             
-        else if (ball_center_col - B_HEIGHT/2 <= 2) begin
+        else if (ball_center_col - B_HEIGHT/2 <= 1) begin
             if (ball_direction == UP_LEFT)
                 ball_direction = UP_RIGHT;
-            if (ball_center_col == DOWN_LEFT)
+            if (ball_direction == DOWN_LEFT)
                 ball_direction = DOWN_RIGHT;
         end
 
-        else if (ball_center_col + B_HEIGHT/2 >= DISP_COLS - 2) begin
+        else if (ball_center_col + B_HEIGHT/2 >= DISP_COLS - 1) begin
             if (ball_direction == UP_RIGHT)
                 ball_direction = UP_LEFT;
-            if (ball_center_col == DOWN_RIGHT)
+            if (ball_direction == DOWN_RIGHT)
                 ball_direction = DOWN_LEFT;
         end
 
-       /* else if ( (ball_center_col - B_WIDTH/2 == L_PADDLE_CENTER_COL + P_WIDTH/2) &&
+        else if ( (ball_center_col - B_WIDTH/2 == L_PADDLE_CENTER_COL + P_WIDTH/2) &&
              (ball_center_row + B_HEIGHT/2 >= l_center_row - P_HEIGHT/2  &&
-              ball_center_row - B_HEIGHT/2 <= l_center_row + P_HEIGHT/2) )
-            collision_type = L_PADDLE_COLLIS;
+              ball_center_row - B_HEIGHT/2 <= l_center_row + P_HEIGHT/2) ) begin
+            if (ball_direction == UP_LEFT)
+                ball_direction = UP_RIGHT;
+            if (ball_direction == DOWN_LEFT)
+                ball_direction = DOWN_RIGHT;
+        end
 
         else if ( (ball_center_col + B_WIDTH/2 == R_PADDLE_CENTER_COL - P_WIDTH/2) &&
              (ball_center_row + B_HEIGHT/2 >= l_center_row - P_HEIGHT/2  &&
-              ball_center_row - B_HEIGHT/2 <= l_center_row + P_HEIGHT/2) )
-            collision_type = R_PADDLE_COLLIS;
-            */
+              ball_center_row - B_HEIGHT/2 <= l_center_row + P_HEIGHT/2) ) begin
+            if (ball_direction == UP_RIGHT)
+                ball_direction = UP_LEFT;
+            if (ball_direction == DOWN_RIGHT)
+                ball_direction = DOWN_LEFT;
+        end    
 
         else
             ball_direction = ball_direction;
