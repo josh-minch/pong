@@ -18,7 +18,7 @@ module move_ball
         input [11:0] r_center_row,
         output reg [11:0] ball_center_col = DISP_COLS/2,
         output reg [11:0] ball_center_row = DISP_COLS/2,
-        output reg [1:0] ball_direction = 2'b00,
+        output reg [1:0] ball_direction = 2'b01,
 
         input clk
     );
@@ -28,7 +28,7 @@ module move_ball
     parameter UP_RIGHT   = 2'b10;
     parameter DOWN_RIGHT = 2'b11;
 
-    parameter SCALER = 12000;
+    parameter SCALER = 25000;
   
     clock_scaler #(.SCALER_WIDTH(20))
         inst_clock_scaler (

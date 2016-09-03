@@ -29,8 +29,8 @@ module draw_game_objects
     parameter BALL_HEIGHT         = 8;
     parameter BALL_WIDTH          = 6;
 
-    parameter L_PADDLE_CENTER_COL = 27;
-    parameter R_PADDLE_CENTER_COL = DISP_COLS - 27;
+    parameter L_PADDLE_CENTER_COL = 55;
+    parameter R_PADDLE_CENTER_COL = DISP_COLS - 55;
 
     wire [11:0] l_paddle_center_row;
     wire [7:0]  l_paddle;
