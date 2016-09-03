@@ -29,26 +29,19 @@ module draw_game_objects
     parameter BALL_HEIGHT         = 8;
     parameter BALL_WIDTH          = 6;
 
-    parameter L_PADDLE_CENTER_COL = 167;
-    parameter R_PADDLE_CENTER_COL = DISP_COLS - 167;
+    parameter L_PADDLE_CENTER_COL = 27;
+    parameter R_PADDLE_CENTER_COL = DISP_COLS - 27;
 
     wire [11:0] l_paddle_center_row;
     wire [7:0]  l_paddle;
     wire [11:0] r_paddle_center_row;
     wire [7:0]  r_paddle;
-    wire [11:0] ai_paddle_center_row;
+    wire [11:0] ai_l_paddle_center_row;
+    wire [11:0] ai_r_paddle_center_row;
     wire [11:0] ball_center_col;
     wire [11:0] ball_center_row;
+    wire [1:0]  ball_direction;
     wire [7:0]  ball;
-
-    ai_move_paddle #(
-            .DISP_ROWS(DISP_ROWS),
-            .PADDLE_HEIGHT(PADDLE_HEIGHT)
-        ) inst_ai_move_paddle (
-            .ball_center_row (ball_center_row),
-            .paddle_center_row(ai_paddle_center_row),
-            .clk               (clk)
-        );
 
     draw_paddle #(
             .PADDLE_COLOR(L_PADDLE_COLOR),
@@ -58,24 +51,13 @@ module draw_game_objects
         ) draw_left_paddle (
             .move_up_control   (move_up_control),
             .move_down_control (move_down_control),
-            .paddle_center_row (ai_paddle_center_row),
+            .paddle_center_row (ai_l_paddle_center_row),
             .col_counter       (col_counter),
             .row_counter       (row_counter),
             .paddle_rgb        (l_paddle),
             .clk               (clk)
         );
 
-    player_move_paddle #(
-        .DISP_COLS(DISP_COLS),
-        .DISP_ROWS(DISP_ROWS)
-        ) inst_player_move_l_paddle (
-            .clk               (clk),
-            .move_up_control   (move_up_control_p0),
-            .move_down_control (move_down_control_p0),
-            .paddle_center_row (l_paddle_center_row)
-        );
-
-    // pass ball center row into right paddle for ai control
     draw_paddle #(
             .PADDLE_COLOR(R_PADDLE_COLOR),
             .PADDLE_CENTER_COL(R_PADDLE_CENTER_COL),
@@ -84,21 +66,11 @@ module draw_game_objects
         ) draw_right_paddle (
             .move_up_control   (move_up_control),
             .move_down_control (move_down_control),
-            .paddle_center_row (ai_paddle_center_row),
+            .paddle_center_row (ai_r_paddle_center_row),
             .col_counter       (col_counter),
             .row_counter       (row_counter),
             .paddle_rgb        (r_paddle),
             .clk               (clk)
-        );
-
-     player_move_paddle #(
-            .DISP_COLS(DISP_COLS),
-            .DISP_ROWS(DISP_ROWS)
-        ) inst_player_move_r_paddle (
-            .clk               (clk),
-            .move_up_control   (move_up_control_p1),
-            .move_down_control (move_down_control_p1),
-            .paddle_center_row (r_paddle_center_row)
         );
 
     draw_ball #(
@@ -114,6 +86,26 @@ module draw_game_objects
             .clk             (clk)
         );
 
+    player_move_paddle #(
+            .DISP_COLS(DISP_COLS),
+            .DISP_ROWS(DISP_ROWS)
+        ) inst_player_move_r_paddle (
+            .clk               (clk),
+            .move_up_control   (move_up_control_p1),
+            .move_down_control (move_down_control_p1),
+            .paddle_center_row (r_paddle_center_row)
+        );
+
+    player_move_paddle #(
+        .DISP_COLS(DISP_COLS),
+        .DISP_ROWS(DISP_ROWS)
+        ) inst_player_move_l_paddle (
+            .clk               (clk),
+            .move_up_control   (move_up_control_p0),
+            .move_down_control (move_down_control_p0),
+            .paddle_center_row (l_paddle_center_row)
+        );
+    
     move_ball #(
             .DISP_COLS(DISP_COLS),
             .DISP_ROWS(DISP_ROWS),
@@ -123,11 +115,36 @@ module draw_game_objects
             .L_PADDLE_CENTER_COL(L_PADDLE_CENTER_COL),
             .R_PADDLE_CENTER_COL(R_PADDLE_CENTER_COL)
         ) inst_move_ball (
-            .l_center_row     (l_paddle_center_row),
-            .r_center_row     (r_paddle_center_row),
+            .l_center_row     (ai_l_paddle_center_row),
+            .r_center_row     (ai_r_paddle_center_row),
             .ball_center_col  (ball_center_col),
             .ball_center_row  (ball_center_row),
+            .ball_direction   (ball_direction),
             .clk              (clk)
+        );
+
+    ai_move_paddle #(
+            .DISP_COLS(DISP_COLS),
+            .DISP_ROWS(DISP_ROWS),
+            .PADDLE_SIDE(0)
+        ) inst_ai_move_l_paddle (
+            .ball_center_row   (ball_center_row),
+            .ball_center_col   (ball_center_col),
+            .ball_direction    (ball_direction),
+            .paddle_center_row (ai_l_paddle_center_row),
+            .clk               (clk)
+        );
+
+    ai_move_paddle #(
+            .DISP_COLS(DISP_COLS),
+            .DISP_ROWS(DISP_ROWS),
+            .PADDLE_SIDE(1)
+        ) inst_ai_move_r_paddle (
+            .ball_center_row   (ball_center_row),
+            .ball_center_col   (ball_center_col),
+            .ball_direction    (ball_direction),
+            .paddle_center_row (ai_r_paddle_center_row),
+            .clk               (clk)
         );
 
     assign rgb = l_paddle | r_paddle | ball;

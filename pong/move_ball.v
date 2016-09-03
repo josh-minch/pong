@@ -18,6 +18,7 @@ module move_ball
         input [11:0] r_center_row,
         output reg [11:0] ball_center_col = DISP_COLS/2,
         output reg [11:0] ball_center_row = DISP_COLS/2,
+        output reg [1:0] ball_direction = 2'b00,
 
         input clk
     );
@@ -27,11 +28,8 @@ module move_ball
     parameter UP_RIGHT   = 2'b10;
     parameter DOWN_RIGHT = 2'b11;
 
-    parameter SCALER = 20000;
-    //parameter SCALER = 1000;
-
-    reg [1:0] ball_direction = UP_RIGHT;
-
+    parameter SCALER = 12000;
+  
     clock_scaler #(.SCALER_WIDTH(20))
         inst_clock_scaler (
             .clk        (clk),
@@ -57,7 +55,7 @@ module move_ball
             if (ball_direction == DOWN_RIGHT)
                 ball_direction = UP_RIGHT;
         end
-    /*        
+            
         else if (ball_center_col - B_HEIGHT/2 <= 1) begin
             if (ball_direction == UP_LEFT)
                 ball_direction = UP_RIGHT;
@@ -71,10 +69,10 @@ module move_ball
             if (ball_direction == DOWN_RIGHT)
                 ball_direction = DOWN_LEFT;
         end 
-    */
+    
         // hit left paddle
         else if ( (ball_center_col - B_WIDTH/2 == L_PADDLE_CENTER_COL + P_WIDTH/2) &&
-             (ball_center_row + B_HEIGHT/2 >= l_center_row - P_HEIGHT/2  ||
+             (ball_center_row + B_HEIGHT/2 >= l_center_row - P_HEIGHT/2  &&
               ball_center_row - B_HEIGHT/2 <= l_center_row + P_HEIGHT/2) ) begin
             if (ball_direction == UP_LEFT)
                 ball_direction = UP_RIGHT;
@@ -84,7 +82,7 @@ module move_ball
 
         // hit right paddle
         else if ( (ball_center_col + B_WIDTH/2 == R_PADDLE_CENTER_COL - P_WIDTH/2) &&
-             (ball_center_row + B_HEIGHT/2 >= r_center_row - P_HEIGHT/2  ||
+             (ball_center_row + B_HEIGHT/2 >= r_center_row - P_HEIGHT/2  &&
               ball_center_row - B_HEIGHT/2 <= r_center_row + P_HEIGHT/2) ) begin
             if (ball_direction == UP_RIGHT)
                 ball_direction = UP_LEFT;
