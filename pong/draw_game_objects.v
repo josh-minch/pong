@@ -22,23 +22,33 @@ module draw_game_objects
 
     parameter L_PADDLE_COLOR      = 8'b11111111;
     parameter R_PADDLE_COLOR      = 8'b11111111;
-    parameter BALL_COLOR          = 8'b11100000;
+    parameter BALL_COLOR          = 8'b11111111;
 
     parameter PADDLE_HEIGHT       = 40;
     parameter PADDLE_WIDTH        = 10;
     parameter BALL_HEIGHT         = 8;
     parameter BALL_WIDTH          = 6;
 
-    parameter L_PADDLE_CENTER_COL = 15;
-    parameter R_PADDLE_CENTER_COL = DISP_COLS - 15;
+    parameter L_PADDLE_CENTER_COL = 167;
+    parameter R_PADDLE_CENTER_COL = DISP_COLS - 167;
 
     wire [11:0] l_paddle_center_row;
     wire [7:0]  l_paddle;
     wire [11:0] r_paddle_center_row;
     wire [7:0]  r_paddle;
+    wire [11:0] ai_paddle_center_row;
     wire [11:0] ball_center_col;
     wire [11:0] ball_center_row;
     wire [7:0]  ball;
+
+    ai_move_paddle #(
+            .DISP_ROWS(DISP_ROWS),
+            .PADDLE_HEIGHT(PADDLE_HEIGHT)
+        ) inst_ai_move_paddle (
+            .ball_center_row (ball_center_row),
+            .paddle_center_row(ai_paddle_center_row),
+            .clk               (clk)
+        );
 
     draw_paddle #(
             .PADDLE_COLOR(L_PADDLE_COLOR),
@@ -48,7 +58,7 @@ module draw_game_objects
         ) draw_left_paddle (
             .move_up_control   (move_up_control),
             .move_down_control (move_down_control),
-            .paddle_center_row (l_paddle_center_row),
+            .paddle_center_row (ai_paddle_center_row),
             .col_counter       (col_counter),
             .row_counter       (row_counter),
             .paddle_rgb        (l_paddle),
@@ -65,6 +75,7 @@ module draw_game_objects
             .paddle_center_row (l_paddle_center_row)
         );
 
+    // pass ball center row into right paddle for ai control
     draw_paddle #(
             .PADDLE_COLOR(R_PADDLE_COLOR),
             .PADDLE_CENTER_COL(R_PADDLE_CENTER_COL),
@@ -73,7 +84,7 @@ module draw_game_objects
         ) draw_right_paddle (
             .move_up_control   (move_up_control),
             .move_down_control (move_down_control),
-            .paddle_center_row (r_paddle_center_row),
+            .paddle_center_row (ai_paddle_center_row),
             .col_counter       (col_counter),
             .row_counter       (row_counter),
             .paddle_rgb        (r_paddle),

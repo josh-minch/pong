@@ -27,9 +27,9 @@ module player_move_paddle
         );
         
     always@ (posedge slower_clk) begin
-        if (move_up_control && paddle_center_row + PADDLE_HEIGHT/2 >= 50)
+        if (move_up_control && paddle_center_row + PADDLE_HEIGHT/2 >= 47)
             paddle_center_row = paddle_center_row - 1;
-        if (move_down_control && paddle_center_row - PADDLE_HEIGHT/2 <= DISP_ROWS - 50) 
+        if (move_down_control && paddle_center_row - PADDLE_HEIGHT/2 <= DISP_ROWS - 42) 
             paddle_center_row = paddle_center_row + 1;          
     end
 
