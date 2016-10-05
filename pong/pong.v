@@ -10,6 +10,8 @@ module pong
         input move_down_control_p0,
         input move_up_control_p1,
         input move_down_control_p1,
+        input select_l_paddle_player,
+        input select_r_paddle_player,
         input h_sync,
         input v_sync,
 
@@ -40,6 +42,8 @@ module pong
             .move_down_control_p0 (move_down_control_p0),
             .move_up_control_p1   (move_up_control_p1),
             .move_down_control_p1 (move_down_control_p1),
+            .input select_l_paddle_player (select_l_paddle_player),
+            .input select_r_paddle_player (select_r_paddle_player),
             .col_counter          (col_counter),
             .row_counter          (row_counter),
             .rgb                  (rgb),

@@ -7,6 +7,8 @@ module vga_top
         input move_down_control_p0,
         input move_up_control_p1,   // right paddle move controls
         input move_down_control_p1,
+        input select_l_paddle_player, // select if ai or player controls each paddle
+        input select_r_paddle_player,
 
         output v_sync_with_porch,
         output h_sync_with_porch,
@@ -49,6 +51,8 @@ module vga_top
             .move_down_control_p0 (move_down_control_p0),
             .move_up_control_p1   (move_up_control_p1),
             .move_down_control_p1 (move_down_control_p1),
+            .select_l_paddle_player (select_l_paddle_player),
+            .select_r_paddle_player (select_r_paddle_player),
             .h_sync               (h_sync),
             .v_sync               (v_sync),
             .rgb                  (rgb),
