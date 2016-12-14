@@ -6,7 +6,7 @@ with Verilog and tested to work on the Digilent BASYS2 FPGA board.
 ###Game and control details
 
 Use the first two switches to select if the paddles are person or AI
-controlled; move the paddles up and down with the four buttons. Scores for
+controlled, and move the paddles up and down with the four buttons. Scores for
 each player are displayed on the 7-segment display. Last switch activates
 lulz-mode.
 
@@ -28,10 +28,7 @@ lulz-mode.
 
 ###Device and specification details
 
-The constraint file cons.ucf is for the Xilinx Spartan 3E-100 CP132 FPGA. The
-input clock used is the default 50 Mhz one. Its designed to display a
-resolution of 800 x 600 @ 72 Hz, but with a faster clock speed and slight
-modification of the code's parameters it can display higher.
+The constraint file cons.ucf is for the Xilinx Spartan 3E-100 CP132 FPGA, using the default 50 Mhz clock.
 
 ISE Project Navigator was used to synthesize the verilog code, implement
 the design, and generate the programming file. The programming file was then
