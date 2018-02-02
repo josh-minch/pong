@@ -1,16 +1,15 @@
-#Pong
+# Pong
 
 An unfinished implementation of Pong (and an accompanying VGA controller) built
 with Verilog and tested to work on the Digilent BASYS2 FPGA board.
 
-###Game and control details
+### Game and control details
 
 Use the first two switches to select if the paddles are person or AI
 controlled, and move the paddles up and down with the four buttons. Scores for
-each player are displayed on the 7-segment display. Last switch activates
-lulz-mode.
+each player are displayed on the 7-segment display. 
 
-###Module Hierarchy
+### Module Hierarchy
 
     vga_top
     |---generate_sync_pulses
@@ -26,7 +25,7 @@ lulz-mode.
     |    ---sync_to_count   
     ----add_porch
 
-###Device and specification details
+### Device and specification details
 
 The constraint file cons.ucf is for the Xilinx Spartan 3E-100 CP132 FPGA, using the default 50 Mhz clock.
 
